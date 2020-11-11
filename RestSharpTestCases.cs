@@ -115,5 +115,14 @@ namespace EmployeeJSOnServer
             Assert.AreEqual("Karthik", employeeData.name);
             Assert.AreEqual("55440", employeeData.salary);
         }
+        /// On calling delete api, an employee with a particular id is deleted
+        /// It is verified with the obtained status code
+        /// UC5
+        [TestMethod]
+        public void OnCallingDeleteEmployeeIsDeleted() {
+            RestRequest request = new RestRequest("/Employees/delete/6", Method.DELETE);
+            IRestResponse response = client.Execute(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }
