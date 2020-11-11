@@ -47,5 +47,23 @@ namespace EmployeeJSOnServer
                 Console.WriteLine(emp.id + "\t" + emp.name + "\t" + emp.salary);
             }
         }
+        /// On calling the post api and passing a json object
+        /// the employee is added and validated with the obtained data and status code
+        /// UC2
+        [TestMethod]
+        public void OnCallingPostAddsEmployee() {
+            RestRequest request = new RestRequest("/Employees/list", Method.POST);
+            JsonObject jsonObj = new JsonObject();
+            jsonObj.Add("id", 4);
+            jsonObj.Add("name", "Robert");
+            jsonObj.Add("salary", "30000");
+            //Adding a parameter of the header type "application/json" 
+            request.AddParameter("application/json", jsonObj, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            Employee employee = JsonConvert.DeserializeObject<Employee>(response.Content);
+            Assert.AreEqual("Robert", employee.name);
+            Assert.AreEqual("30000", employee.salary);
+        }
     }
 }
