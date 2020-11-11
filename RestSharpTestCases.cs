@@ -99,5 +99,21 @@ namespace EmployeeJSOnServer
             
             Assert.AreEqual(3, result.Count);
         }
+        /// On calling put api, a particular employee detail is updated
+        /// and it is validated with the added data
+        /// UC4
+        [TestMethod]
+        public void OnCallingPutUpdatesEmployee() {
+            RestRequest request = new RestRequest("/Employees/update/5", Method.PUT);
+            JsonObject jsonObj = new JsonObject();
+            jsonObj.Add("name", "Karthik");
+            jsonObj.Add("salary", "55440");
+            request.AddParameter("application/json", jsonObj, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Employee employeeData = JsonConvert.DeserializeObject<Employee>(response.Content);
+            Assert.AreEqual("Karthik", employeeData.name);
+            Assert.AreEqual("55440", employeeData.salary);
+        }
     }
 }
